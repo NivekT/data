@@ -3,7 +3,7 @@
 .. currentmodule:: torchdata.datapipes.iter
 
 
-Extractor
-=========
+MaxTokenBucketizer
+==================
 
-.. autoclass:: Extractor
+.. autoclass:: MaxTokenBucketizer

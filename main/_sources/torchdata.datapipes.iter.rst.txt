@@ -48,11 +48,11 @@ These DataPipes help opening and decompressing archive files of different format
     :toctree: generated/
     :template: datapipe.rst
 
-    Extractor
+    Decompressor
     RarArchiveLoader
-    TarArchiveReader
-    XzFileReader
-    ZipArchiveReader
+    TarArchiveLoader
+    XzFileLoader
+    ZipArchiveLoader
 
 Augmenting DataPipes
 -----------------------------
@@ -76,6 +76,7 @@ These DataPipes help to perform combinatorial operations.
     :toctree: generated/
     :template: datapipe.rst
 
+    InBatchShuffler
     Sampler
     Shuffler
 
@@ -111,6 +112,7 @@ These DataPipes have you group samples within a DataPipe.
     BucketBatcher
     Collator
     Grouper
+    MaxTokenBucketizer
     UnBatcher
 
 IO DataPipes
