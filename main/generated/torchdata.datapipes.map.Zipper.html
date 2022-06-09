@@ -6,7 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -34,7 +34,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Utility Functions" href="../torchdata.datapipes.utils.html" />
-    <link rel="prev" title="Shuffler" href="torchdata.datapipes.map.Shuffler.html" />
+    <link rel="prev" title="UnZipper" href="torchdata.datapipes.map.UnZipper.html" />
   <!-- Google Analytics -->
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117752657-2"></script>
@@ -135,6 +135,10 @@
                   <span class="dropdown-title">TorchServe</span>
                   <p></p>
                 </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://pytorch.org/torchx/">
+                  <span class="dropdown-title">TorchX</span>
+                  <p></p>
+                </a>
                 <a class="doc-dropdown-option nav-dropdown-item" href="https://pytorch.org/xla">
                   <span class="dropdown-title">PyTorch on XLA Devices</span>
                   <p></p>
@@ -200,7 +204,7 @@
           <div class="pytorch-left-menu-search">
             
     <div class="version">
-      <a href='https://pytorch.org/data/versions.html'>main (0.4.0a0+6dadb75 ) &#x25BC</a>
+      <a href='https://pytorch.org/data/versions.html'>main (0.5.0a0+af913cc ) &#x25BC</a>
     </div>
     
 
@@ -319,14 +323,14 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <section id="zipper">
-<h1>Zipper<a class="headerlink" href="#zipper" title="Permalink to this headline">¶</a></h1>
+<h1>Zipper<a class="headerlink" href="#zipper" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="torchdata.datapipes.map.Zipper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchdata.datapipes.map.</span></span><span class="sig-name descname"><span class="pre">Zipper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">datapipes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../torchdata.datapipes.map.html#torchdata.datapipes.map.MapDataPipe" title="torch.utils.data.datapipes.datapipe.MapDataPipe"><span class="pre">torch.utils.data.datapipes.datapipe.MapDataPipe</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T_co</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchdata.datapipes.map.Zipper" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchdata.datapipes.map.</span></span><span class="sig-name descname"><span class="pre">Zipper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">datapipes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../torchdata.datapipes.map.html#torchdata.datapipes.map.MapDataPipe" title="torchdata.datapipes.map.MapDataPipe"><span class="pre">MapDataPipe</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T_co</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchdata.datapipes.map.Zipper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aggregates elements into a tuple from each of the input DataPipes (functional name: <code class="docutils literal notranslate"><span class="pre">zip</span></code>).
 This MataPipe is out of bound as soon as the shortest input DataPipe is exhausted.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>*datapipes</strong> – Map DataPipes being aggregated</p>
 </dd>
 </dl>
@@ -354,7 +358,7 @@ This MataPipe is out of bound as soon as the shortest input DataPipe is exhauste
         <a href="../torchdata.datapipes.utils.html" class="btn btn-neutral float-right" title="Utility Functions" accesskey="n" rel="next">Next <img src="../_static/images/chevron-right-orange.svg" class="next-page"></a>
       
       
-        <a href="torchdata.datapipes.map.Shuffler.html" class="btn btn-neutral" title="Shuffler" accesskey="p" rel="prev"><img src="../_static/images/chevron-right-orange.svg" class="previous-page"> Previous</a>
+        <a href="torchdata.datapipes.map.UnZipper.html" class="btn btn-neutral" title="UnZipper" accesskey="p" rel="prev"><img src="../_static/images/chevron-right-orange.svg" class="previous-page"> Previous</a>
       
     </div>
   
@@ -405,6 +409,7 @@ This MataPipe is out of bound as soon as the shortest input DataPipe is exhauste
          <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
          <script src="../_static/jquery.js"></script>
          <script src="../_static/underscore.js"></script>
+         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
          <script src="../_static/doctools.js"></script>
      
 
@@ -479,37 +484,6 @@ This MataPipe is out of bound as soon as the shortest input DataPipe is exhauste
         <div class="footer-links-col follow-us-col">
           <ul>
             <li class="list-title">Stay Connected</li>
-            <li>
-              <div id="mc_embed_signup">
-                <form
-                  action="https://twitter.us14.list-manage.com/subscribe/post?u=75419c71fe0a935e53dfa4a3f&id=91d0dccd39"
-                  method="post"
-                  id="mc-embedded-subscribe-form"
-                  name="mc-embedded-subscribe-form"
-                  class="email-subscribe-form validate"
-                  target="_blank"
-                  novalidate>
-                  <div id="mc_embed_signup_scroll" class="email-subscribe-form-fields-wrapper">
-                    <div class="mc-field-group">
-                      <label for="mce-EMAIL" style="display:none;">Email Address</label>
-                      <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address">
-                    </div>
-
-                    <div id="mce-responses" class="clear">
-                      <div class="response" id="mce-error-response" style="display:none"></div>
-                      <div class="response" id="mce-success-response" style="display:none"></div>
-                    </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_75419c71fe0a935e53dfa4a3f_91d0dccd39" tabindex="-1" value=""></div>
-
-                    <div class="clear">
-                      <input type="submit" value="" name="subscribe" id="mc-embedded-subscribe" class="button email-subscribe-button">
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-            </li>
           </ul>
 
           <div class="footer-social-icons">
@@ -592,11 +566,11 @@ This MataPipe is out of bound as soon as the shortest input DataPipe is exhauste
             </li>
 
             <li>
-              <a href="https://pytorch.org/elastic/">TorchElastic</a>
+              <a href="https://pytorch.org/serve/">TorchServe</a>
             </li>
 
             <li>
-              <a href="https://pytorch.org/serve/">TorchServe</a>
+              <a href="https://pytorch.org/torchx/">TorchX</a>
             </li>
 
             <li>

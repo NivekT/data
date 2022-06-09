@@ -6,7 +6,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -135,6 +135,10 @@
                   <span class="dropdown-title">TorchServe</span>
                   <p></p>
                 </a>
+                <a class="doc-dropdown-option nav-dropdown-item" href="https://pytorch.org/torchx/">
+                  <span class="dropdown-title">TorchX</span>
+                  <p></p>
+                </a>
                 <a class="doc-dropdown-option nav-dropdown-item" href="https://pytorch.org/xla">
                   <span class="dropdown-title">PyTorch on XLA Devices</span>
                   <p></p>
@@ -200,7 +204,7 @@
           <div class="pytorch-left-menu-search">
             
     <div class="version">
-      <a href='https://pytorch.org/data/versions.html'>main (0.4.0a0+6dadb75 ) &#x25BC</a>
+      <a href='https://pytorch.org/data/versions.html'>main (0.5.0a0+af913cc ) &#x25BC</a>
     </div>
     
 
@@ -317,9 +321,9 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">¶</a></h1>
 <section id="using-datapipes">
-<h2>Using DataPipes<a class="headerlink" href="#using-datapipes" title="Permalink to this headline">¶</a></h2>
+<h2>Using DataPipes<a class="headerlink" href="#using-datapipes" title="Permalink to this heading">¶</a></h2>
 <p>Suppose that we want to load data from CSV files with the following steps:</p>
 <ul class="simple">
 <li><p>List all CSV files in a directory</p></li>
@@ -368,7 +372,7 @@ class constructors. A pipeline can be assembled as the following:</p>
 <a class="reference external" href="torchdata.datapipes.map.html">MapDataPipes here</a>.</p>
 </section>
 <section id="working-with-dataloader">
-<h2>Working with DataLoader<a class="headerlink" href="#working-with-dataloader" title="Permalink to this headline">¶</a></h2>
+<h2>Working with DataLoader<a class="headerlink" href="#working-with-dataloader" title="Permalink to this heading">¶</a></h2>
 <p>In this section, we will demonstrate how you can use DataPipe with <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>.
 For the most part, you should be able to use it just by passing <code class="docutils literal notranslate"><span class="pre">dataset=datapipe</span></code> as an input arugment
 into the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>. For detailed documentation related to <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>,
@@ -380,51 +384,96 @@ please visit <a class="reference external" href="https://pytorch.org/docs/stable
 <span class="k">def</span> <span class="nf">generate_csv</span><span class="p">(</span><span class="n">file_label</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">num_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="s1">&#39;c{i}&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_features</span><span class="p">)]</span>
     <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;sample_data{file_label}.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">)</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fieldnames</span><span class="p">})</span>  <span class="c1"># writing the header row</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rows</span><span class="p">):</span>
         <span class="n">row_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fieldnames</span><span class="p">}</span>
         <span class="n">row_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Next, we will build our DataPipes to read and parse through the generated CSV files:</p>
+<p>Next, we will build our DataPipes to read and parse through the generated CSV files. Note that we prefer to have
+pass defined functions to DataPipes rather than lambda functions because the formers are serializable with <cite>pickle</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torchdata.datapipes</span> <span class="kn">as</span> <span class="nn">dp</span>
 
+<span class="k">def</span> <span class="nf">filter_for_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;sample_data&quot;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">and</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">row_processer</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)}</span>
+
 <span class="k">def</span> <span class="nf">build_datapipes</span><span class="p">(</span><span class="n">root_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">dp</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">FileLister</span><span class="p">(</span><span class="n">root_dir</span><span class="p">)</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filter_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">filename</span><span class="p">:</span> <span class="s2">&quot;sample_data&quot;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">and</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">))</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">dp</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">FileOpener</span><span class="p">(</span><span class="n">datapipe</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rt&#39;</span><span class="p">)</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filter_fn</span><span class="o">=</span><span class="n">filter_for_data</span><span class="p">)</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">open_files</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rt&#39;</span><span class="p">)</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">parse_csv</span><span class="p">(</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">skip_lines</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span>
-                                         <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)})</span>
+    <span class="c1"># Shuffle will happen as long as you do NOT set `shuffle=False` later in the DataLoader</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">row_processer</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">datapipe</span>
 </pre></div>
 </div>
-<p>Lastly, we will put everything together in <code class="docutils literal notranslate"><span class="pre">'__main__'</span></code> and pass the DataPipe into the DataLoader.</p>
+<p>Lastly, we will put everything together in <code class="docutils literal notranslate"><span class="pre">'__main__'</span></code> and pass the DataPipe into the DataLoader. Note that
+if you choose to use <code class="docutils literal notranslate"><span class="pre">Batcher</span></code> while setting <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> for DataLoader, your samples will be
+batched more than once. You should choose one or the other.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">num_files_to_generate</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_files_to_generate</span><span class="p">):</span>
-        <span class="n">generate_csv</span><span class="p">(</span><span class="n">file_label</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">generate_csv</span><span class="p">(</span><span class="n">file_label</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">datapipe</span> <span class="o">=</span> <span class="n">build_datapipes</span><span class="p">()</span>
-    <span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">datapipe</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">datapipe</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">first</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dl</span><span class="p">))</span>
     <span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">first</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">first</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Labels batch shape: {labels.size()}&quot;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Feature batch shape: {features.size()}&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{labels = }</span><span class="se">\n</span><span class="s2">{features = }&quot;</span><span class="p">)</span>
+    <span class="n">n_sample</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">dl</span><span class="p">):</span>
+        <span class="n">n_sample</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{n_sample = }&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The following statements will be printed to show the shapes of a single batch of labels and features.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Labels</span> <span class="n">batch</span> <span class="n">shape</span><span class="p">:</span> <span class="mi">50</span>
-<span class="n">Feature</span> <span class="n">batch</span> <span class="n">shape</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Labels</span> <span class="n">batch</span> <span class="n">shape</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">Feature</span> <span class="n">batch</span> <span class="n">shape</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([[</span><span class="mf">0.2867</span><span class="p">,</span> <span class="mf">0.5973</span><span class="p">,</span> <span class="mf">0.0730</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.7890</span><span class="p">,</span> <span class="mf">0.9279</span><span class="p">,</span> <span class="mf">0.7392</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.8930</span><span class="p">,</span> <span class="mf">0.7434</span><span class="p">,</span> <span class="mf">0.0780</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.8225</span><span class="p">,</span> <span class="mf">0.4047</span><span class="p">,</span> <span class="mf">0.0800</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.1655</span><span class="p">,</span> <span class="mf">0.0323</span><span class="p">,</span> <span class="mf">0.5561</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">n_sample</span> <span class="o">=</span> <span class="mi">12</span>
 </pre></div>
 </div>
+<p>The reason why <code class="docutils literal notranslate"><span class="pre">n_sample</span> <span class="pre">=</span> <span class="pre">12</span></code> is because <code class="docutils literal notranslate"><span class="pre">ShardingFilter</span></code> (<code class="docutils literal notranslate"><span class="pre">datapipe.sharding_filter()</span></code>) was not used, such that
+each worker will independently return all samples. In this case, there are 10 rows per file and 3 files, with a
+batch size of 5, that gives us 6 batches per worker. With 2 workers, we get 12 total batches from the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>.</p>
+<p>In order for DataPipe sharding to work with <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>, we need to add the following. It is crucial to add
+<cite>ShardingFilter</cite> after <cite>Shuffler</cite> to ensure that all worker processes have the same order of data for sharding.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_datapipes</span><span class="p">(</span><span class="n">root_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="c1"># Add the following line to `build_datapipes`</span>
+    <span class="c1"># Note that it is somewhere after `Shuffler` in the DataPipe line, but before expensive operations</span>
+    <span class="n">datapipe</span> <span class="o">=</span> <span class="n">datapipe</span><span class="o">.</span><span class="n">sharding_filter</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">datapipe</span>
+</pre></div>
+</div>
+<p>When we re-run, we will get:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">n_sample</span> <span class="o">=</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Place <code class="docutils literal notranslate"><span class="pre">ShardingFilter</span></code> (<code class="docutils literal notranslate"><span class="pre">datapipe.sharding_filter</span></code>) as early as possible in the pipeline, especially before expensive
+operations such as decoding, in order to avoid repeating these expensive operations across worker/distributed processes.</p></li>
+</ul>
 <p>You can find more DataPipe implementation examples for various research domains <a class="reference external" href="torchexamples.html">on this page</a>.</p>
 </section>
 <section id="implementing-a-custom-datapipe">
-<h2>Implementing a Custom DataPipe<a class="headerlink" href="#implementing-a-custom-datapipe" title="Permalink to this headline">¶</a></h2>
+<h2>Implementing a Custom DataPipe<a class="headerlink" href="#implementing-a-custom-datapipe" title="Permalink to this heading">¶</a></h2>
 <p>Currently, we already have a large number of built-in DataPipes and we expect them to cover most necessary
 data processing operations. If none of them supports your need, you can create your own custom DataPipe.</p>
 <p>As a guiding example, let us implement an <code class="docutils literal notranslate"><span class="pre">IterDataPipe</span></code> that applies a callable to the input iterator. For
@@ -432,14 +481,16 @@ data processing operations. If none of them supports your need, you can create y
 <a class="reference external" href="https://github.com/pytorch/pytorch/tree/master/torch/utils/data/datapipes/map">map</a>
 folder for examples, and follow the steps below for the <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> method instead of  the <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> method.</p>
 <section id="naming">
-<h3>Naming<a class="headerlink" href="#naming" title="Permalink to this headline">¶</a></h3>
+<h3>Naming<a class="headerlink" href="#naming" title="Permalink to this heading">¶</a></h3>
 <p>The naming convention for <code class="docutils literal notranslate"><span class="pre">DataPipe</span></code> is “Operation”-er, followed by <code class="docutils literal notranslate"><span class="pre">IterDataPipe</span></code> or <code class="docutils literal notranslate"><span class="pre">MapDataPipe</span></code>, as each
 DataPipe is essentially a container to apply an operation to data yielded from a source <code class="docutils literal notranslate"><span class="pre">DataPipe</span></code>. For succinctness,
 we alias to just “Operation-er” in <strong>init</strong> files. For our <code class="docutils literal notranslate"><span class="pre">IterDataPipe</span></code> example, we’ll name the module
 <code class="docutils literal notranslate"><span class="pre">MapperIterDataPipe</span></code> and alias it as <code class="docutils literal notranslate"><span class="pre">iter.Mapper</span></code> under <code class="docutils literal notranslate"><span class="pre">torchdata.datapipes</span></code>.</p>
+<p>For the functional method name, the naming convention is <code class="docutils literal notranslate"><span class="pre">datapipe.&lt;operation&gt;</span></code>. For instance,
+the functional method name of <code class="docutils literal notranslate"><span class="pre">Mapper</span></code> is <code class="docutils literal notranslate"><span class="pre">map</span></code>, such that it can be invoked by <code class="docutils literal notranslate"><span class="pre">datapipe.map(...)</span></code>.</p>
 </section>
 <section id="constructor">
-<h3>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h3>
+<h3>Constructor<a class="headerlink" href="#constructor" title="Permalink to this heading">¶</a></h3>
 <p>DataSets are now generally constructed as stacks of <code class="docutils literal notranslate"><span class="pre">DataPipes</span></code>, so each <code class="docutils literal notranslate"><span class="pre">DataPipe</span></code> typically takes a
 source <code class="docutils literal notranslate"><span class="pre">DataPipe</span></code> as its first argument. Here is a simplified version of <cite>Mapper</cite> as an example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchdata.datapipes.iter</span> <span class="kn">import</span> <span class="n">IterDataPipe</span>
@@ -460,12 +511,12 @@ iterator is created from the instance, the data may have already changed. Please
 <a class="reference external" href="https://github.com/pytorch/pytorch/blob/master/torch/utils/data/datapipes/iter/utils.py">class</a>
 as reference to <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> data for each iterator.</p></li>
 <li><p>Avoid variables names that are taken by the functional names of existing DataPipes. For instance, <code class="docutils literal notranslate"><span class="pre">.filter</span></code> is
-is functional name that can be used to invoke <code class="docutils literal notranslate"><span class="pre">FilterIterDataPipe</span></code>. Having a variable named <code class="docutils literal notranslate"><span class="pre">filter</span></code> inside
+the functional name that can be used to invoke <code class="docutils literal notranslate"><span class="pre">FilterIterDataPipe</span></code>. Having a variable named <code class="docutils literal notranslate"><span class="pre">filter</span></code> inside
 another <code class="docutils literal notranslate"><span class="pre">IterDataPipe</span></code> can lead to confusion.</p></li>
 </ul>
 </section>
 <section id="iterator">
-<h3>Iterator<a class="headerlink" href="#iterator" title="Permalink to this headline">¶</a></h3>
+<h3>Iterator<a class="headerlink" href="#iterator" title="Permalink to this heading">¶</a></h3>
 <p>For <code class="docutils literal notranslate"><span class="pre">IterDataPipes</span></code>, an <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> function is needed to consume data from the source <code class="docutils literal notranslate"><span class="pre">IterDataPipe</span></code> then
 apply the operation over the data before <code class="docutils literal notranslate"><span class="pre">yield</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MapperIterDataPipe</span><span class="p">(</span><span class="n">IterDataPipe</span><span class="p">):</span>
@@ -478,7 +529,7 @@ apply the operation over the data before <code class="docutils literal notransla
 </div>
 </section>
 <section id="length">
-<h3>Length<a class="headerlink" href="#length" title="Permalink to this headline">¶</a></h3>
+<h3>Length<a class="headerlink" href="#length" title="Permalink to this heading">¶</a></h3>
 <p>In many cases, as in our <code class="docutils literal notranslate"><span class="pre">MapperIterDataPipe</span></code> example, the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method of a DataPipe returns the length of the
 source DataPipe.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MapperIterDataPipe</span><span class="p">(</span><span class="n">IterDataPipe</span><span class="p">):</span>
@@ -495,7 +546,7 @@ an Error depending on the input. In those cases, the Error must be a <code class
 build-in functions like <code class="docutils literal notranslate"><span class="pre">list(dp)</span></code>.</p>
 </section>
 <section id="registering-datapipes-with-the-functional-api">
-<h3>Registering DataPipes with the functional API<a class="headerlink" href="#registering-datapipes-with-the-functional-api" title="Permalink to this headline">¶</a></h3>
+<h3>Registering DataPipes with the functional API<a class="headerlink" href="#registering-datapipes-with-the-functional-api" title="Permalink to this heading">¶</a></h3>
 <p>Each DataPipe can be registered to support functional invocation using the decorator <code class="docutils literal notranslate"><span class="pre">functional_datapipe</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@functional_datapipe</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MapperIterDataPipe</span><span class="p">(</span><span class="n">IterDataPipe</span><span class="p">):</span>
@@ -594,6 +645,7 @@ recommend using the functional form of DataPipes.</p>
          <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
          <script src="_static/jquery.js"></script>
          <script src="_static/underscore.js"></script>
+         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
          <script src="_static/doctools.js"></script>
      
 
@@ -668,37 +720,6 @@ recommend using the functional form of DataPipes.</p>
         <div class="footer-links-col follow-us-col">
           <ul>
             <li class="list-title">Stay Connected</li>
-            <li>
-              <div id="mc_embed_signup">
-                <form
-                  action="https://twitter.us14.list-manage.com/subscribe/post?u=75419c71fe0a935e53dfa4a3f&id=91d0dccd39"
-                  method="post"
-                  id="mc-embedded-subscribe-form"
-                  name="mc-embedded-subscribe-form"
-                  class="email-subscribe-form validate"
-                  target="_blank"
-                  novalidate>
-                  <div id="mc_embed_signup_scroll" class="email-subscribe-form-fields-wrapper">
-                    <div class="mc-field-group">
-                      <label for="mce-EMAIL" style="display:none;">Email Address</label>
-                      <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address">
-                    </div>
-
-                    <div id="mce-responses" class="clear">
-                      <div class="response" id="mce-error-response" style="display:none"></div>
-                      <div class="response" id="mce-success-response" style="display:none"></div>
-                    </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_75419c71fe0a935e53dfa4a3f_91d0dccd39" tabindex="-1" value=""></div>
-
-                    <div class="clear">
-                      <input type="submit" value="" name="subscribe" id="mc-embedded-subscribe" class="button email-subscribe-button">
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-            </li>
           </ul>
 
           <div class="footer-social-icons">
@@ -781,11 +802,11 @@ recommend using the functional form of DataPipes.</p>
             </li>
 
             <li>
-              <a href="https://pytorch.org/elastic/">TorchElastic</a>
+              <a href="https://pytorch.org/serve/">TorchServe</a>
             </li>
 
             <li>
-              <a href="https://pytorch.org/serve/">TorchServe</a>
+              <a href="https://pytorch.org/torchx/">TorchX</a>
             </li>
 
             <li>
