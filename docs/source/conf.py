@@ -91,7 +91,10 @@ html_css_files = [
     "css/custom.css",
 ]
 
-autodoc_type_aliases = True
+autodoc_type_aliases = {
+    "Union[IterDataPipe, MapDataPipe]": "DataPipe",
+    "Dict[int, Tuple[DataPipe, DataPipeGraph]": "DataPipeGraph",
+}
 
 # TODO(598): use regex to replace all "T" and "T_co" related signature
 signature_replacements = {
@@ -131,7 +134,11 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
         for old, new in signature_replacements.items():
             if old in signature:
                 signature = signature.replace(old, new)
-        return signature, return_annotation
+    if isinstance(return_annotation, str):
+        for old, new in signature_replacements.items():
+            if old in return_annotation:
+                return_annotation = return_annotation.replace(old, new)
+    return signature, return_annotation
 
 
 def setup(app):
